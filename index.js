@@ -13,6 +13,8 @@ paper.setup(size);
 // path.moveTo(start);
 // path.lineTo(end);
 
+
+//draw detectors--------------------------------------------------------------------------
 function drawDetectors(obj){
     let center = obj.center;
     let outerRadius = !!obj.outerRadius?obj.outerRadius:40;
@@ -27,9 +29,35 @@ function drawDetectors(obj){
     var outer = new paper.Path.Circle(center, outerRadius);
     outer.strokeWidth= outerWidth*outerRadius;
     outer.strokeColor = color;
-
-    
 }
+
+//stringToBinary-----------------------------------------------------------------------
+function stringToBinary(input) {
+    let output="";
+    for (var i = 0; i < input.length; i++) {
+        output += input[i].charCodeAt(0).toString(2) + " ";
+    }
+    return output;
+}
+
+var codeConvaersion =stringToBinary("FlamCodeTestTexts");
+var Binarybreak = codeConvaersion.split(' ');
+
+console.log(Binarybreak.length-1);
+
+
+//drawDetectorsInLine-----------------------------------------------------------------------------------------
+/**
+ * @description this function draws the detectors on the paper 
+ */
+function drawDetectorsInLine(numOfDetectors)  //todo this function is to be added with minimum distance check and max distance
+{
+
+
+
+}
+
+
 
 drawDetectors({"center" : new paper.Point(100,100)})
 
