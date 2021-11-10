@@ -4,6 +4,7 @@ const path = require('path');
 const { count } = require('console');
 const radius = 20
 let paperSize = 300
+let papermargin =20;
 var size = new paper.Size(paperSize, paperSize)
 paper.setup(size);
 
@@ -26,7 +27,7 @@ let arrCircles=[];
 //draw detectors--------------------------------------------------------------------------
 function drawDetectors(obj){
     let center = obj.center;
-    let outerRadius = !!obj.outerRadius?obj.outerRadius:10;
+    let outerRadius = !!obj.outerRadius?obj.outerRadius:20;
     let radiusRatio = !!obj.radiusRatio?obj.radiusRatio:0.4;
     let outerWidth = !!obj.outerWidth?obj.outerWidth:0.1;
     let color = !!obj.color?obj.color : 'black';
@@ -62,7 +63,7 @@ console.log(Binarybreak.length-1);
 
 let countC = 0;
 var numOfDetectors = 5
-var minDist = 50
+var minDist = 80;
 var margin = 20
 var outerRadius = 0.5*(paperSize/numOfDetectors-minDist);  
 
@@ -91,7 +92,8 @@ function drawDetectorsInLine()  //todo this function is to be added with minimum
 function drawPath(start,end){
     let path = new paper.Path({
         strokeColor: "black",
-        strokeWidth: 1
+        strokeWidth: 3,
+        strokeCap: "round"
     });
     path.add(start,end);
 
@@ -147,8 +149,100 @@ function drawPath(start,end){
 function generateDetectors(num)
 {
 
+  
   let max_iterations = 1000;
+  let arrPoints = []
 
+  for(let i=0;i<num;i++)
+  {
+    let run = true;
+    while (max_iterations && run)
+    {
+      max_iterations--;
+      var temppoint  = new paper.Point(papermargin+(paperSize-2*papermargin)*Math.random(),papermargin+(paperSize-2*papermargin)*Math.random());
+      let add =true; 
+      arrPoints.forEach(
+        (val)=>{
+          if(temppoint.subtract(val.center).length <minDist)
+          {
+              add =false;
+          }
+        }
+      )
+
+      if(add)
+      {
+        arrPoints.push({"center":temppoint});
+        run = false;
+      }
+
+    }
+
+    if(max_iterations <=0)
+    {
+      console.error("paper too small");
+      break;
+    }
+    max_iterations =1000;
+
+  }
+
+
+  //calcuting centroid
+
+  let centroid = new paper.Point(0,0);
+
+  arrPoints.forEach(
+    (val)=> {
+      centroid.add(val.center.multiply(1/arrPoints.length));
+    }
+  )
+
+  //calculating all angles 
+  arrPoints.forEach(
+    (val)=> {
+      let Cangle = val.center.subtract(centroid).angle;
+      let Dist = val.center.subtract(centroid).length;
+      val["Cangle"] = Cangle;
+      val["dist"] = Dist;
+    }
+  )
+
+
+
+
+/**
+ * Sorting Detectors
+ * @
+ */
+
+function compare(a,b)
+{
+    if(a.Cangle<b.Cangle){
+      return -1;
+    }
+    else if(a.Cangle==b.Cangle){
+      if(a.dist<b.dist)
+        return -1;
+      else return 1;
+    }
+    else 
+      return 1;
+  }
+
+
+
+
+  arrPoints.sort(compare);
+
+
+
+
+
+
+  console.log("number of detectors"+arrPoints.length);
+
+  arrPoints.forEach((val)=>{drawDetectors(val)});
 
 
 }
@@ -181,7 +275,7 @@ function drawCode(data,detectorCircles)
 {
 
   //---------------------------------------------------------------
-    let marginRatio = 0.1;
+    let marginRatio = 0.4;
   //--------------------------------------------------------------
 
   let binaryData = stringToBinary(data).split(' ');;
@@ -258,8 +352,8 @@ function drawCode(data,detectorCircles)
 // drawDetectors({"center":new paper.Point(220,60)});
 // drawDetectors({"center":new paper.Point(225,180)});
 
-
-drawCode("FlamCode",arrCircles);
+generateDetectors(4);
+drawCode("FlamCodeadsffgdsaffgdfsghh",arrCircles);
 
 
 
