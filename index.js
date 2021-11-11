@@ -4,7 +4,7 @@ const path = require('path');
 const { count } = require('console');
 const radius = 20
 let paperSize = 300
-let papermargin =20;
+let papermargin =50;
 var size = new paper.Size(paperSize, paperSize)
 paper.setup(size);
 
@@ -296,7 +296,7 @@ function drawCode(data,detectorCircles)
   
   let magnitudeChange =detectorCircles[0].outerRadius;
   magnitudeChange = magnitudeChange*(1+marginRatio);
-  
+  console.log("numberOfSections=="+numberOfSection)
   for (let i =0 ;i < numberOfSection;i++)
   {
     var circlefrom = detectorCircles[i];
@@ -327,9 +327,11 @@ function drawCode(data,detectorCircles)
     
     // drawPath(start,end);
 
-    console.log("length of first binary " + binaryData[i].length);
-    
+    // console.log("length of first binary " + binaryData[i].length);
+    if(numberOfSection>binaryData.length)
+      break;
     let unitBinary  = (end.subtract(start).length)/ binaryData[i].length;
+
     for(let j =0;j < binaryData[i].length;j++)
     {
       if(binaryData[i][j] == '1')
@@ -352,10 +354,14 @@ function drawCode(data,detectorCircles)
 // drawDetectors({"center":new paper.Point(220,60)});
 // drawDetectors({"center":new paper.Point(225,180)});
 
-generateDetectors(4);
-drawCode("FlamCodeadsffgdsaffgdfsghh",arrCircles);
+for (let i=0;i<10;i++){
+  paper.setup(size);
 
+  generateDetectors(4);
+  drawCode("FlamCode",arrCircles);
+  var svg = paper.project.exportSVG({asString:true});
+  fs.writeFileSync(`data/${i}_image.svg`, svg);
+  
+  paper.setup(size);
 
-
-var svg = paper.project.exportSVG({asString:true});
-fs.writeFileSync('punchline.svg', svg);
+}
