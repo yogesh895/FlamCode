@@ -356,8 +356,8 @@ function drawCode(data,detectorCircles)
 
 i=0;
 
-generateDetectors(4);
-drawCode("FlamCode",arrCircles);
+generateDetectors(2);
+drawCode("Flaghetrhryjt",arrCircles);
 var svg = paper.project.exportSVG({asString:true});
 fs.writeFileSync(`data/${i}_image.svg`, svg);
   
