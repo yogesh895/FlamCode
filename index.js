@@ -354,14 +354,10 @@ function drawCode(data,detectorCircles)
 // drawDetectors({"center":new paper.Point(220,60)});
 // drawDetectors({"center":new paper.Point(225,180)});
 
-for (let i=0;i<10;i++){
-  paper.setup(size);
+i=0;
 
-  generateDetectors(4);
-  drawCode("FlamCode",arrCircles);
-  var svg = paper.project.exportSVG({asString:true});
-  fs.writeFileSync(`data/${i}_image.svg`, svg);
+generateDetectors(4);
+drawCode("FlamCode",arrCircles);
+var svg = paper.project.exportSVG({asString:true});
+fs.writeFileSync(`data/${i}_image.svg`, svg);
   
-  paper.setup(size);
-
-}
