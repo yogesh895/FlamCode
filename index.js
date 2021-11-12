@@ -275,7 +275,7 @@ function drawCode(data,detectorCircles)
 {
 
   //---------------------------------------------------------------
-    let marginRatio = 0.4;
+    let marginRatio = 0.1;
   //--------------------------------------------------------------
 
   let binaryData = stringToBinary(data).split(' ');;
@@ -354,7 +354,7 @@ function drawCode(data,detectorCircles)
 // drawDetectors({"center":new paper.Point(220,60)});
 // drawDetectors({"center":new paper.Point(225,180)});
 
-i=0;
+i=98;
 
 generateDetectors(2);
 drawCode("Flaghetrhryjt",arrCircles);
